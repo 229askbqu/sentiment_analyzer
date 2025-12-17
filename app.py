@@ -37,8 +37,8 @@ if st.button("Analyze"):
         st.warning("⚠️ Please enter a review before analyzing.")
     else:
         try:
-            proba = model.predict_proba([review])[0]
-            prediction = model.predict([review])[0]
+            proba = model.predict_proba([[review]])[0]
+            prediction = model.predict([[review]])[0]
             confidence = max(proba)
 
             st.markdown("### 🔍 Sentiment Result")
