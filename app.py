@@ -36,18 +36,22 @@ if st.button("Analyze"):
     if not review.strip():
         st.warning("⚠️ Please enter a review before analyzing.")
     else:
-        proba = model.predict_proba([review])[0]
-        prediction = model.predict([review])[0]
-        confidence = max(proba)
+        try:
+            proba = model.predict_proba([review])[0]
+            prediction = model.predict([review])[0]
+            confidence = max(proba)
 
-        st.markdown("### 🔍 Sentiment Result")
+            st.markdown("### 🔍 Sentiment Result")
 
-        if prediction == "Positive":
-            st.success(f"😊 Positive ({confidence:.2%} confident)")
-        elif prediction == "Negative":
-            st.error(f"😠 Negative ({confidence:.2%} confident)")
-        else:
-            st.info(f"😐 Neutral ({confidence:.2%} confident)")
+            if prediction == "Positive":
+                st.success(f"😊 Positive ({confidence:.2%} confident)")
+            elif prediction == "Negative":
+                st.error(f"😠 Negative ({confidence:.2%} confident)")
+            else:
+                st.info(f"😐 Neutral ({confidence:.2%} confident)")
+        except Exception as e:
+            st.error(f"Something went wrong: {e}")
+
 
 
     
