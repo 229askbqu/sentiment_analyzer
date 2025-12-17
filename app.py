@@ -32,19 +32,23 @@ st.markdown("### 📝 Enter Your Review")
 review = st.text_area("Your review here:", height=150)
 
 # analyze button
-if st.button("Analyze"):   
-    proba = model.predict_proba([review])[0]
-    prediction = model.predict([review])[0]
-    confidence = max(proba)
-
-    st.markdown("### 🔍 Sentiment Result")
-
-    if prediction == "Positive":
-        st.success(f"😊 Positive ({confidence:.2%} confident)")
-    elif prediction == "Negative":
-        st.error(f"😠 Negative ({confidence:.2%} confident)")
+if st.button("Analyze"):
+    if not review.strip():
+        st.warning("⚠️ Please enter a review before analyzing.")
     else:
-        st.info(f"😐 Neutral ({confidence:.2%} confident)")
+        proba = model.predict_proba([review])[0]
+        prediction = model.predict([review])[0]
+        confidence = max(proba)
+
+        st.markdown("### 🔍 Sentiment Result")
+
+        if prediction == "Positive":
+            st.success(f"😊 Positive ({confidence:.2%} confident)")
+        elif prediction == "Negative":
+            st.error(f"😠 Negative ({confidence:.2%} confident)")
+        else:
+            st.info(f"😐 Neutral ({confidence:.2%} confident)")
+
 
     
         
