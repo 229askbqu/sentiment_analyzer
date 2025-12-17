@@ -37,8 +37,10 @@ if st.button("Analyze"):
         st.warning("⚠️ Please enter a review before analyzing.")
     else:
         try:
-            proba = model.predict_proba([[review]])[0]
-            prediction = model.predict([[review]])[0]
+            vectorizer = pickle.load(open("model/vectorizer.pkl", "rb"))
+            X = vectorizer.transform([review])
+            proba = model.predict_proba(X)[0]
+            prediction = model.predict(X)[0]
             confidence = max(proba)
 
             st.markdown("### 🔍 Sentiment Result")
@@ -51,6 +53,7 @@ if st.button("Analyze"):
                 st.info(f"😐 Neutral ({confidence:.2%} confident)")
         except Exception as e:
             st.error(f"Something went wrong: {e}")
+
 
 
 
