@@ -6,7 +6,7 @@ with st.sidebar:
     st.header("📘 How to Use")
     st.write("""
     1. Type or paste a movie review in the box.
-    2. Click **Analyze** to see if it's Good, Neutral, or Bad.
+    2. Click **Analyze** to see if it's Good or Bad.
     3. Try different reviews to test the model!
     """)
 
@@ -19,7 +19,7 @@ st.set_page_config(
 
 # App header
 st.title("🎭 Movie Review Sentiment Analyzer")
-st.markdown("Analyze the sentiment of any movie review — is it Good, Neutral, or Bad.")
+st.markdown("Analyze the sentiment of any movie review — is it Good or Bad.")
 st.markdown("---")
 
 # Load model and vectorizer
@@ -43,9 +43,7 @@ if st.button("Analyze"):
 
             if prediction == "Positive":
                 st.success("😊 Good")
-            elif prediction == "Negative":
-                st.error("😠 Bad")
             else:
-                st.info("😐 Neutral")
+                st.error("😠 Bad")
         except Exception as e:
             st.error("Something went wrong while analyzing the review.")
