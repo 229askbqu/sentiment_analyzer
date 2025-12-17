@@ -6,7 +6,7 @@ with st.sidebar:
     st.header("📘 How to Use")
     st.write("""
     1. Type or paste a movie review in the box.
-    2. Click **Analyze** to see the sentiment.
+    2. Click **Analyze** to see if it's Good, Neutral, or Bad.
     3. Try different reviews to test the model!
     """)
 
@@ -19,7 +19,7 @@ st.set_page_config(
 
 # App header
 st.title("🎭 Movie Review Sentiment Analyzer")
-st.markdown("Analyze the sentiment of any movie review — is it Positive, Negative, or Neutral?")
+st.markdown("Analyze the sentiment of any movie review — is it Good, Neutral, or Bad.")
 st.markdown("---")
 
 # Load model and vectorizer
@@ -37,19 +37,15 @@ if st.button("Analyze"):
     else:
         try:
             X = vectorizer.transform([review])
-            proba = model.predict_proba(X)[0]
-            classes = model.classes_
-            max_index = proba.argmax()
-            prediction = classes[max_index]
-            confidence = proba[max_index]
+            prediction = model.predict(X)[0]
 
             st.markdown("### 🔍 Sentiment Result")
 
             if prediction == "Positive":
-                st.success(f"😊 Positive ({confidence:.2%} confident)")
+                st.success("😊 Good")
             elif prediction == "Negative":
-                st.error(f"😠 Negative ({confidence:.2%} confident)")
+                st.error("😠 Bad")
             else:
-                st.info(f"😐 Neutral ({confidence:.2%} confident)")
+                st.info("😐 Neutral")
         except Exception as e:
-            st.error(f"Something went wrong: {e}")
+            st.error("Something went wrong while analyzing the review.")
