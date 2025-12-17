@@ -1,7 +1,7 @@
 import streamlit as st
 import pickle
 
-# sidebar 
+# Sidebar instructions
 with st.sidebar:
     st.header("📘 How to Use")
     st.write("""
@@ -10,38 +10,38 @@ with st.sidebar:
     3. Try different reviews to test the model!
     """)
 
-
-# page config
+# Page config
 st.set_page_config(
     page_title="Sentiment Analyzer",
     page_icon="💬",
     layout="centered"
 )
 
-# app header
+# App header
 st.title("🎭 Movie Review Sentiment Analyzer")
 st.markdown("Analyze the sentiment of any movie review — is it Positive, Negative, or Neutral?")
 st.markdown("---")
 
-
-# Load model(pipeline with vectorizer inside)
+# Load model and vectorizer
 model = pickle.load(open("model/model.pkl", "rb"))
+vectorizer = pickle.load(open("model/vectorizer.pkl", "rb"))
 
-# input section
+# Input section
 st.markdown("### 📝 Enter Your Review")
 review = st.text_area("Your review here:", height=150)
 
-# analyze button
+# Analyze button
 if st.button("Analyze"):
     if not review.strip():
         st.warning("⚠️ Please enter a review before analyzing.")
     else:
         try:
-            vectorizer = pickle.load(open("model/vectorizer.pkl", "rb"))
             X = vectorizer.transform([review])
             proba = model.predict_proba(X)[0]
-            prediction = model.predict(X)[0]
-            confidence = max(proba)
+            classes = model.classes_
+            max_index = proba.argmax()
+            prediction = classes[max_index]
+            confidence = proba[max_index]
 
             st.markdown("### 🔍 Sentiment Result")
 
@@ -53,10 +53,3 @@ if st.button("Analyze"):
                 st.info(f"😐 Neutral ({confidence:.2%} confident)")
         except Exception as e:
             st.error(f"Something went wrong: {e}")
-
-
-
-
-    
-        
-
